@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/WidgetComponent.h"
 
 AMSCharacter::AMSCharacter()
 {
@@ -20,6 +21,9 @@ AMSCharacter::AMSCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
+	OverheadWidget->SetupAttachment(RootComponent);
 }
 
 void AMSCharacter::BeginPlay()
