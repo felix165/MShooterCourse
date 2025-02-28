@@ -47,7 +47,7 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMSCharacter::MoveForward(float Value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MoveForward: %f"), Value);
+	//UE_LOG(LogTemp, Warning, TEXT("MoveForward: %f"), Value);
 	if(Controller != nullptr && Value != 0.f)
 	{
 		const FRotator YawRotation(0.f, Controller->GetControlRotation().Yaw, 0.f);
