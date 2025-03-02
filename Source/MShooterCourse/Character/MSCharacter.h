@@ -48,6 +48,10 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* CombatComponent;
 
+	//ONLY CALLED BY client and execute on server (One of RPC)
+	UFUNCTION(Server, Reliable)
+	void ServerEquipButtonPressed();
+
 public:	
 
 	//only SET the value if it changing to replicated

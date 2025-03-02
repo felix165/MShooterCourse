@@ -108,7 +108,22 @@ void AMSCharacter::LookUp(float Value)
 
 void AMSCharacter::EquipButtonPressed()
 {
-	if (CombatComponent && HasAuthority())
+	if (CombatComponent)
+	{
+		if (HasAuthority())
+		{
+			CombatComponent->EquipWeapon(OverlappingWeapon);
+		}
+		else
+		{
+			ServerEquipButtonPressed();
+		}
+	}
+}
+
+void AMSCharacter::ServerEquipButtonPressed_Implementation()
+{
+	if (CombatComponent)
 	{
 		CombatComponent->EquipWeapon(OverlappingWeapon);
 	}
@@ -142,6 +157,8 @@ void AMSCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 		LastWeapon->ShowPickupWidget(false);
 	}
 }
+
+
 
 
 
