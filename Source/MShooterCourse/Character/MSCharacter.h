@@ -57,5 +57,7 @@ public:
 	//only SET the value if it changing to replicated
 	//FORCEINLINE void SetOverlappingWeapon(AWeapon* Weapon) { OverlappingWeapon = Weapon; }
 	void SetOverlappingWeapon(AWeapon* Weapon);
+	bool IsWeaponEquipped();
+
 
 };

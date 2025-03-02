@@ -26,4 +26,5 @@ void UMSAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Speed = Velocity.Size();
 	bIsInAir = MSCharacter->GetCharacterMovement()->IsFalling();
 	bIsAccelerating = MSCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
+	bWeaponEquipped = MSCharacter->IsWeaponEquipped();
 }

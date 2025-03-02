@@ -158,6 +158,11 @@ void AMSCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 	}
 }
 
+bool AMSCharacter::IsWeaponEquipped()
+{
+	return (CombatComponent && CombatComponent->EquippedWeapon);
+}
+
 
 
 
