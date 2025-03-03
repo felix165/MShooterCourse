@@ -30,6 +30,8 @@ AMSCharacter::AMSCharacter()
 
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	CombatComponent->SetIsReplicated(true);
+
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 }
 
 void AMSCharacter::BeginPlay()
@@ -56,6 +58,9 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &AMSCharacter::LookUp);
 
 	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &AMSCharacter::EquipButtonPressed);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMSCharacter::CrouchButtonPressed);
+	PlayerInputComponent->BindAction("Aiming", IE_Pressed, this, &AMSCharacter::AimButtonPressed);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMSCharacter::SprintButtonPressed);
 }
 
 void AMSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -119,6 +124,27 @@ void AMSCharacter::EquipButtonPressed()
 			ServerEquipButtonPressed();
 		}
 	}
+}
+
+void AMSCharacter::CrouchButtonPressed()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+
+	}
+	else
+	{
+		Crouch();
+	}
+}
+
+void AMSCharacter::AimButtonPressed()
+{
+}
+
+void AMSCharacter::SprintButtonPressed()
+{
 }
 
 void AMSCharacter::ServerEquipButtonPressed_Implementation()
