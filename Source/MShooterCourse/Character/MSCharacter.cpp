@@ -60,7 +60,9 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &AMSCharacter::EquipButtonPressed);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMSCharacter::CrouchButtonPressed);
 	PlayerInputComponent->BindAction("Aiming", IE_Pressed, this, &AMSCharacter::AimButtonPressed);
+	PlayerInputComponent->BindAction("Aiming", IE_Released, this, &AMSCharacter::AimButtonReleased);
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMSCharacter::SprintButtonPressed);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMSCharacter::SprintButtonReleased);
 }
 
 void AMSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -128,22 +130,41 @@ void AMSCharacter::EquipButtonPressed()
 
 void AMSCharacter::CrouchButtonPressed()
 {
-	if (bIsCrouched)
+	if (IsWeaponEquipped())
 	{
-		UnCrouch();
+		if (bIsCrouched)
+		{
+			UnCrouch();
 
-	}
-	else
-	{
-		Crouch();
+		}
+		else
+		{
+			Crouch();
+		}
 	}
 }
 
 void AMSCharacter::AimButtonPressed()
 {
+	if (CombatComponent)
+	{
+		CombatComponent->SetAiming(true);
+	}
+}
+
+void AMSCharacter::AimButtonReleased()
+{
+	if (CombatComponent)
+	{
+		CombatComponent->SetAiming(false);
+	}
 }
 
 void AMSCharacter::SprintButtonPressed()
+{
+}
+
+void AMSCharacter::SprintButtonReleased()
 {
 }
 
@@ -187,6 +208,11 @@ void AMSCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 bool AMSCharacter::IsWeaponEquipped()
 {
 	return (CombatComponent && CombatComponent->EquippedWeapon);
+}
+
+bool AMSCharacter::IsAiming()
+{
+	return (CombatComponent && CombatComponent->bAiming);
 }
 
 

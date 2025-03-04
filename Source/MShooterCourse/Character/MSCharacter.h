@@ -28,7 +28,9 @@ protected:
 	void EquipButtonPressed();
 	void CrouchButtonPressed();
 	void AimButtonPressed();
+	void AimButtonReleased();
 	void SprintButtonPressed();
+	void SprintButtonReleased();
 
 
 private:
@@ -61,6 +63,7 @@ public:
 	//FORCEINLINE void SetOverlappingWeapon(AWeapon* Weapon) { OverlappingWeapon = Weapon; }
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
+	bool IsAiming();
 
 
 };
