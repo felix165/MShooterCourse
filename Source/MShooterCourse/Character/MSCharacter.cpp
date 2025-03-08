@@ -9,6 +9,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Weapon.h"
 #include "MShooterCourse/MSComponent/CombatComponent.h"
+#include "Components/CapsuleComponent.h"
 
 AMSCharacter::AMSCharacter()
 {
@@ -32,6 +33,8 @@ AMSCharacter::AMSCharacter()
 	CombatComponent->SetIsReplicated(true);
 
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 }
 
 void AMSCharacter::BeginPlay()
