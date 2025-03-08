@@ -252,6 +252,12 @@ bool AMSCharacter::IsAiming()
 	return (CombatComponent && CombatComponent->bAiming);
 }
 
+AWeapon* AMSCharacter::GetEquippedWeapon()
+{
+	if (CombatComponent == nullptr) return nullptr;
+	return CombatComponent->EquippedWeapon;
+}
+
 
 
 
