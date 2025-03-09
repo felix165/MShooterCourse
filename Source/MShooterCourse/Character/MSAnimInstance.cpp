@@ -32,6 +32,7 @@ void UMSAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	EquippedWeapon = MSCharacter->GetEquippedWeapon();
 	bIsCrouched = MSCharacter->bIsCrouched;
 	bIsAiming = MSCharacter->IsAiming();
+	TurningInPlace = MSCharacter->GetTurningInPlace();
 
 	// Offset Yaw for Strafing
 	FRotator AimRotation= MSCharacter->GetBaseAimRotation();

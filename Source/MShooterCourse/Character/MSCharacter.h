@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "MShooterCourse/Types/TurningInPlace.h"
 #include "MSCharacter.generated.h"
 
 UCLASS()
@@ -62,6 +63,9 @@ private:
 	float AO_Pitch;
 	FRotator StartingAimRotation;
 
+	ETurningInPlace TurningInPlace;
+	void TurnInPlace(float DeltaTime);
+
 public:	
 
 	//only SET the value if it changing to replicated
@@ -75,5 +79,5 @@ public:
 
 	AWeapon* GetEquippedWeapon();
 
-
+	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 };
