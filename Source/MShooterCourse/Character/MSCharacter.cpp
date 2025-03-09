@@ -37,7 +37,11 @@ AMSCharacter::AMSCharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 850.f, 0.f);
+
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
+	NetUpdateFrequency = 66.f;
+	MinNetUpdateFrequency = 33.f;
 }
 
 void AMSCharacter::BeginPlay()
@@ -57,7 +61,7 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMSCharacter::Jump);
 
 	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &AMSCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Move Right / Left", this, &AMSCharacter::MoveRight);
@@ -137,7 +141,7 @@ void AMSCharacter::EquipButtonPressed()
 
 void AMSCharacter::CrouchButtonPressed()
 {
-	if (IsWeaponEquipped())
+	/*if (IsWeaponEquipped())
 	{
 		if (bIsCrouched)
 		{
@@ -148,6 +152,15 @@ void AMSCharacter::CrouchButtonPressed()
 		{
 			Crouch();
 		}
+	}*/
+	if (bIsCrouched)
+	{
+		UnCrouch();
+
+	}
+	else
+	{
+		Crouch();
 	}
 }
 
@@ -173,6 +186,18 @@ void AMSCharacter::SprintButtonPressed()
 
 void AMSCharacter::SprintButtonReleased()
 {
+}
+
+
+void AMSCharacter::Jump()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else {
+		Super::Jump();
+	}
 }
 
 void AMSCharacter::AimOffset(float DeltaTime)
@@ -216,7 +241,7 @@ void AMSCharacter::AimOffset(float DeltaTime)
 
 void AMSCharacter::TurnInPlace(float DeltaTime)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f"), AO_Yaw);
+	//UE_LOG(LogTemp, Warning, TEXT("%f"), AO_Yaw);
 	if (AO_Yaw > 90.f)
 	{
 		TurningInPlace = ETurningInPlace::ETIP_Right;

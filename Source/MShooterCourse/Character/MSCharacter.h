@@ -33,6 +33,7 @@ protected:
 	void SprintButtonPressed();
 	void SprintButtonReleased();
 	void AimOffset(float DeltaTime);
+	virtual void Jump() override;
 
 
 private:
