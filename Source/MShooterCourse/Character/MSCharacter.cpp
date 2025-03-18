@@ -11,6 +11,7 @@
 #include "MShooterCourse/MSComponent/CombatComponent.h"
 #include "Components/CapsuleComponent.h"
 #include <Kismet/KismetMathLibrary.h>
+#include "Animation/AnimInstance.h"
 
 AMSCharacter::AMSCharacter()
 {
@@ -74,6 +75,8 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("Aiming", IE_Released, this, &AMSCharacter::AimButtonReleased);
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMSCharacter::SprintButtonPressed);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMSCharacter::SprintButtonReleased);
+	PlayerInputComponent->BindAction("WeaponFire", IE_Pressed, this, &AMSCharacter::WeaponFireButtonPressed);
+	PlayerInputComponent->BindAction("WeaponFire", IE_Released, this, &AMSCharacter::WeaponFireButtonReleased);
 }
 
 void AMSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -89,6 +92,20 @@ void AMSCharacter::PostInitializeComponents()
 	if (CombatComponent)
 	{
 		CombatComponent->Character = this;
+	}
+}
+
+void AMSCharacter::PlayFireMontage(bool bAiming)
+{
+	if (CombatComponent == nullptr || CombatComponent->EquippedWeapon == nullptr) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && FireWeaponMontage)
+	{
+		AnimInstance->Montage_Play(FireWeaponMontage);
+		FName SectionName;
+		SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
+		AnimInstance->Montage_JumpToSection(SectionName);
 	}
 }
 
@@ -197,6 +214,24 @@ void AMSCharacter::Jump()
 	}
 	else {
 		Super::Jump();
+	}
+}
+
+void AMSCharacter::WeaponFireButtonPressed()
+{
+
+	if (CombatComponent)
+	{
+		CombatComponent->WeaponFireButtonPressed(true);
+	}
+}
+
+void AMSCharacter::WeaponFireButtonReleased()
+{
+
+	if (CombatComponent)
+	{
+		CombatComponent->WeaponFireButtonPressed(false);
 	}
 }
 
