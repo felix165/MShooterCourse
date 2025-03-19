@@ -110,7 +110,7 @@ void AWeapon::Fire(const FVector& HitTarget)
 		{
 			FTransform SocketTransform = AmmoEjectSocket->GetSocketTransform(WeaponMesh);
 
-			UWorld* World = GetWorld();
+			UWorld* World = GetWorld(); 
 			if (World)
 			{
 				World->SpawnActor<ABulletShell>(
