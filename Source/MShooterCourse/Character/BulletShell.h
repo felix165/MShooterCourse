@@ -17,6 +17,15 @@ private:
     UPROPERTY(VisibleAnywhere)
     UStaticMeshComponent* BulletMesh;
 
+    UPROPERTY(EditAnywhere)
+    float ShellEjectionImpulse;
+
+    UPROPERTY(EditAnywhere)
+    class USoundCue* ShellSound;
+
 protected:
     virtual void BeginPlay() override;
+
+    UFUNCTION()
+    virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

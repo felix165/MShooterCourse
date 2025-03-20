@@ -81,7 +81,14 @@ void UCombatComponent::WeaponFireButtonPressed(bool bPressed)
 	{
 		FHitResult HitResult;
 		TraceUnderCrosshairs(HitResult);
-		ServerFire(HitResult.ImpactPoint);
+		if (!HitResult.bBlockingHit)
+		{
+			ServerFire(HitResult.TraceEnd);
+		}
+		else {
+			ServerFire(HitResult.ImpactPoint);
+		}
+
 	}
 }
 
@@ -104,7 +111,7 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		CrosshairWorldPosition,
 		CrosshairWorldDirection
 	);
-	
+
 	if (bScreenToWorld)
 	{
 		FVector Start = CrosshairWorldPosition;
