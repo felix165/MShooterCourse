@@ -351,6 +351,12 @@ AWeapon* AMSCharacter::GetEquippedWeapon()
 	return CombatComponent->EquippedWeapon;
 }
 
+FVector AMSCharacter::GetHitTarget() const
+{
+	if (CombatComponent == nullptr) return FVector();
+	return CombatComponent->HitTarget;
+}
+
 
 
 

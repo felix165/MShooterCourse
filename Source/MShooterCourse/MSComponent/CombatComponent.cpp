@@ -38,6 +38,13 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	SetHUDCrosshairs(DeltaTime);
 
+	if (Character && Character->IsLocallyControlled())
+	{
+		FHitResult HitResult;
+		TraceUnderCrosshairs(HitResult);
+		HitTarget = HitResult.ImpactPoint;
+	}
+
 }
 
 void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
@@ -141,13 +148,7 @@ void UCombatComponent::WeaponFireButtonPressed(bool bPressed)
 	{
 		FHitResult HitResult;
 		TraceUnderCrosshairs(HitResult);
-		if (!HitResult.bBlockingHit)
-		{
-			ServerFire(HitResult.TraceEnd);
-		}
-		else {
-			ServerFire(HitResult.ImpactPoint);
-		}
+		ServerFire(HitResult.ImpactPoint);
 
 	}
 }
@@ -181,6 +182,11 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		QueryParams.AddIgnoredActor(EquippedWeapon);
 
 		GetWorld()->LineTraceSingleByChannel(TraceHitResult, Start, End, ECC_Visibility, QueryParams);
+
+		if (!TraceHitResult.bBlockingHit)
+		{
+			TraceHitResult.ImpactPoint = End;
+		}
 
 	}
 
