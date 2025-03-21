@@ -111,6 +111,19 @@ void AMSCharacter::PlayFireMontage(bool bAiming)
 	}
 }
 
+void AMSCharacter::PlayHitReactMontage()
+{
+	if (CombatComponent == nullptr || CombatComponent->EquippedWeapon == nullptr) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && HitReactMontage)
+	{
+		AnimInstance->Montage_Play(HitReactMontage);
+		FName SectionName("FromFront");
+		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
 void AMSCharacter::MoveForward(float Value)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("MoveForward: %f"), Value);
@@ -237,6 +250,8 @@ void AMSCharacter::WeaponFireButtonReleased()
 	}
 }
 
+
+
 void AMSCharacter::AimOffset(float DeltaTime)
 {
 	if (CombatComponent && CombatComponent->EquippedWeapon == nullptr) return;
@@ -298,6 +313,11 @@ void AMSCharacter::TurnInPlace(float DeltaTime)
 			StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
 		}
 	}
+}
+
+void AMSCharacter::MulticastHit_Implementation()
+{
+	PlayHitReactMontage();
 }
 
 void AMSCharacter::HideCameraIfCharacterClose()
