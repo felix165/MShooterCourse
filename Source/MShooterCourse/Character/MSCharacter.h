@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "MShooterCourse/Types/TurningInPlace.h"
+#include "MShooterCourse/Interfaces/InteractWithCrosshairInterface.h"
 #include "MSCharacter.generated.h"
 
 UCLASS()
-class MSHOOTERCOURSE_API AMSCharacter : public ACharacter
+class MSHOOTERCOURSE_API AMSCharacter : public ACharacter, public IInteractWithCrosshairInterface
 {
 	GENERATED_BODY()
 

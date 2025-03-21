@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "MShooterCourse/HUD/MSHUD.h"
 #include "CombatComponent.generated.h"
 
 
@@ -75,6 +76,8 @@ private:
 	float CrosshairShootingFactor;
 
 	FVector HitTarget;
+
+	FHUDPackage HUDPackage;
 
 	/**
 	* Aiming and FOV
