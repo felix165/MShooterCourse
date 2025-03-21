@@ -113,10 +113,11 @@ void AWeapon::Fire(const FVector& HitTarget)
 			UWorld* World = GetWorld(); 
 			if (World)
 			{
+				float randomAngle = FMath::RandRange(0.f, 360.f);
 				World->SpawnActor<ABulletShell>(
 					BulletShell,
 					SocketTransform.GetLocation(),
-					SocketTransform.GetRotation().Rotator()
+					FRotator(randomAngle, randomAngle, randomAngle)
 				);
 			}
 		}
