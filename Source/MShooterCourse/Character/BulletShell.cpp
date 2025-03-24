@@ -40,3 +40,6 @@ void ABulletShell::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 }
 
 
+
+
+
