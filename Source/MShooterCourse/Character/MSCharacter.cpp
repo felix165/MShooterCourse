@@ -115,12 +115,17 @@ void AMSCharacter::PlayHitReactMontage()
 {
 	if (CombatComponent == nullptr || CombatComponent->EquippedWeapon == nullptr) return;
 
+	//if (GEngine)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 2.f, HasAuthority() ? FColor::Red : FColor::Blue, TEXT("hitreact"));
+	//}
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && HitReactMontage)
 	{
 		AnimInstance->Montage_Play(HitReactMontage);
 		FName SectionName("FromFront");
 		AnimInstance->Montage_JumpToSection(SectionName);
+
 	}
 }
 

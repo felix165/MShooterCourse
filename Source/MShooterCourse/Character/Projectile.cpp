@@ -68,8 +68,14 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	Destroy();
 }
 
+
 void AProjectile::MulticastOnHit_Implementation()
 {
+
+	//if(GEngine)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 2.f, HasAuthority()? FColor::Red : FColor::Blue, TEXT("MulticastOnHit"));
+	//}
 	if (ImpactParticles)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
