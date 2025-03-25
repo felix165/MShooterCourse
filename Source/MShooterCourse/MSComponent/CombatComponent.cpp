@@ -120,11 +120,12 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 			}
 
 			HUDPackage.CrosshairSpread =
-				0.4f +
+				0.5f +
 				CrosshairVelocityFactor +
 				CrosshairInAirFactor -
 				CrosshairAimFactor +
-				CrosshairShootingFactor - CrosshairDetectTargetFactor;
+				CrosshairShootingFactor - 
+				CrosshairDetectTargetFactor;
 
 
 			HUD->SetHUDPackage(HUDPackage);
@@ -219,7 +220,7 @@ void UCombatComponent::FireTimerFinished()
 
 void UCombatComponent::Fire()
 {
-	if (EquippedWeapon) return;
+	if (EquippedWeapon == nullptr) return;
 	if (bCanFire)
 	{
 		bCanFire = false;
