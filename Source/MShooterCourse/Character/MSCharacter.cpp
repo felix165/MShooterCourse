@@ -10,8 +10,9 @@
 #include "Weapon.h"
 #include "MShooterCourse/MSComponent/CombatComponent.h"
 #include "Components/CapsuleComponent.h"
-#include <Kismet/KismetMathLibrary.h>
+#include "Kismet/KismetMathLibrary.h"
 #include "Animation/AnimInstance.h"
+#include "MShooterCourse/PlayerController/MSPlayerController.h"
 
 AMSCharacter::AMSCharacter()
 {
@@ -50,6 +51,11 @@ void AMSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	PC = Cast<AMSPlayerController>(Controller);
+	if (PC)
+	{
+		PC->SetHUDHealth(Health, MaxHealth);
+	}
 }
 
 void AMSCharacter::Tick(float DeltaTime)

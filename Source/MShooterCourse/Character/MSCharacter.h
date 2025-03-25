@@ -112,6 +112,8 @@ private:
 	UFUNCTION()
 	void OnRep_Health();
 
+	class AMSPlayerController* PC;
+
 public:	
 
 	//only SET the value if it changing to replicated
