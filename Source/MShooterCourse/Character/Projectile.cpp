@@ -64,18 +64,23 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		Character->MulticastHit();
 	}
-	MulticastOnHit();
+	MulticastOnHit(Character!=nullptr);
 	Destroy();
 }
 
 
-void AProjectile::MulticastOnHit_Implementation()
+void AProjectile::MulticastOnHit_Implementation(bool isCharacter)
 {
 
 	//if(GEngine)
 	//{
 	//	GEngine->AddOnScreenDebugMessage(-1, 2.f, HasAuthority()? FColor::Red : FColor::Blue, TEXT("MulticastOnHit"));
 	//}
+
+	if (isCharacter && ImpactParticlesHitFlesh) {
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticlesHitFlesh, GetActorTransform());
+
+	}
 	if (ImpactParticles)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
