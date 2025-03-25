@@ -2,6 +2,8 @@
 
 
 #include "MSHUD.h"
+#include "GameFramework/PlayerController.h"
+#include "CharOverlay.h"
 
 void AMSHUD::DrawHUD()
 {
@@ -43,6 +45,22 @@ void AMSHUD::DrawHUD()
 
     }
 
+}
+
+void AMSHUD::BeginPlay()
+{
+    Super::BeginPlay();
+    AddCharacterOverlay();
+}
+
+void AMSHUD::AddCharacterOverlay()
+{
+    APlayerController* PlayerController = GetOwningPlayerController();
+    if (PlayerController && CharacterOverlayClass)
+    {
+        CharacterOverlay = CreateWidget<UCharOverlay>(PlayerController, CharacterOverlayClass);
+        CharacterOverlay->AddToViewport();
+    }
 }
 
 void AMSHUD::DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor)

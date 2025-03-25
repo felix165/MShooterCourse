@@ -100,6 +100,7 @@ void AMSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(AMSCharacter, OverlappingWeapon, COND_OwnerOnly);
+	DOREPLIFETIME(AMSCharacter, Health);
 }
 
 void AMSCharacter::PostInitializeComponents()
@@ -418,6 +419,8 @@ void AMSCharacter::ServerEquipButtonPressed_Implementation()
 	}
 }
 
+
+
 void AMSCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	if (OverlappingWeapon)
@@ -447,12 +450,19 @@ void AMSCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 	}
 }
 
+#pragma region OnRep
 void AMSCharacter::OnRep_ReplicatedMovement()
 {
 	Super::OnRep_ReplicatedMovement();
 	SimProxiesTurn();
 	TimeSinceLastMovementReplication = 0.f;
 }
+
+void AMSCharacter::OnRep_Health()
+{
+
+}
+#pragma endregion
 
 bool AMSCharacter::IsWeaponEquipped()
 {
