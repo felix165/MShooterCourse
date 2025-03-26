@@ -50,11 +50,11 @@ AMSCharacter::AMSCharacter()
 void AMSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	PC = Cast<AMSPlayerController>(Controller);
-	if (PC)
+
+	UpdateHUDHealth();
+	if (HasAuthority())
 	{
-		PC->SetHUDHealth(Health, MaxHealth);
+		OnTakeAnyDamage.AddDynamic(this, &AMSCharacter::ReceiveDamage);
 	}
 }
 
@@ -151,6 +151,16 @@ void AMSCharacter::PlayHitReactMontage()
 
 	}
 }
+
+void AMSCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser)
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+
+}
+
+
 
 void AMSCharacter::MoveForward(float Value)
 {
@@ -391,10 +401,6 @@ void AMSCharacter::SimProxiesTurn()
 
 }
 
-void AMSCharacter::MulticastHit_Implementation()
-{
-	PlayHitReactMontage();
-}
 
 void AMSCharacter::HideCameraIfCharacterClose()
 {
@@ -466,9 +472,21 @@ void AMSCharacter::OnRep_ReplicatedMovement()
 
 void AMSCharacter::OnRep_Health()
 {
-
+	UpdateHUDHealth();
+	PlayHitReactMontage();
 }
 #pragma endregion
+
+
+void AMSCharacter::UpdateHUDHealth()
+{
+	PC = PC == nullptr ? Cast<AMSPlayerController>(Controller) : PC;
+	if (PC)
+	{
+		PC->SetHUDHealth(Health, MaxHealth);
+	}
+}
+
 
 bool AMSCharacter::IsWeaponEquipped()
 {

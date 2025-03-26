@@ -60,10 +60,6 @@ void AProjectile::BeginPlay()
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	AMSCharacter* Character = Cast<AMSCharacter>(OtherActor);
-	if (Character)
-	{
-		Character->MulticastHit();
-	}
 	MulticastOnHit(Character!=nullptr);
 	Destroy();
 }
