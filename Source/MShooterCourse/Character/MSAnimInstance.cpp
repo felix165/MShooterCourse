@@ -34,6 +34,7 @@ void UMSAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsAiming = MSCharacter->IsAiming();
 	TurningInPlace = MSCharacter->GetTurningInPlace();
 	bRotateRootBone = MSCharacter->ShouldRotateRootBone();
+	bElimmed = MSCharacter->IsElimmed();
 
 	// Offset Yaw for Strafing
 	FRotator AimRotation= MSCharacter->GetBaseAimRotation();

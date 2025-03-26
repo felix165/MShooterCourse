@@ -7,4 +7,8 @@
 
 void AMShooterGameMode::PlayerEliminated(AMSCharacter* ElimmedCharacter, AMSPlayerController* VictimController, AMSPlayerController* AttackerController)
 {
+    if (ElimmedCharacter)
+    {
+        ElimmedCharacter->Elim();
+    }
 }

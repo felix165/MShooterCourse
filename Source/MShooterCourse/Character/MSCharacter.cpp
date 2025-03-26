@@ -135,6 +135,15 @@ void AMSCharacter::PlayFireMontage(bool bAiming)
 	}
 }
 
+void AMSCharacter::PlayElimMontage()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && ElimMontage)
+	{
+		AnimInstance->Montage_Play(ElimMontage);
+	}
+}
+
 void AMSCharacter::PlayHitReactMontage()
 {
 	if (CombatComponent == nullptr || CombatComponent->EquippedWeapon == nullptr) return;
@@ -171,10 +180,10 @@ void AMSCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDama
 	}
 }
 
-void AMSCharacter::Elim()
+void AMSCharacter::Elim_Implementation()
 {
-
-
+	bElimmed = true;
+	PlayElimMontage();
 }
 
 
