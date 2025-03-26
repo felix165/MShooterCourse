@@ -14,6 +14,7 @@
 #include "Animation/AnimInstance.h"
 #include "MShooterCourse/PlayerController/MSPlayerController.h"
 #include "MShooterCourse/GameMode/MShooterGameMode.h"
+#include "TimerManager.h"
 
 AMSCharacter::AMSCharacter()
 {
@@ -180,10 +181,26 @@ void AMSCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDama
 	}
 }
 
-void AMSCharacter::Elim_Implementation()
+void AMSCharacter::Elim()
+{
+	if (!bElimmed)
+	{
+		MulticastElim();
+		GetWorldTimerManager().SetTimer(
+			ElimTimer,
+			this,
+			&AMSCharacter::ElimTimerFinished,
+			ElimDelay
+		);
+	}
+
+}
+
+void AMSCharacter::MulticastElim_Implementation()
 {
 	bElimmed = true;
 	PlayElimMontage();
+
 }
 
 
@@ -458,6 +475,8 @@ void AMSCharacter::ServerEquipButtonPressed_Implementation()
 
 
 
+
+
 void AMSCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	if (OverlappingWeapon)
@@ -514,6 +533,17 @@ void AMSCharacter::UpdateHUDHealth()
 	}
 }
 
+#pragma region TimerHandle
+
+void AMSCharacter::ElimTimerFinished()
+{
+	AMShooterGameMode* GM = GetWorld()->GetAuthGameMode<AMShooterGameMode>();
+	if (GM)
+	{
+		GM->RequestRespawn(this, Controller);
+	}
+}
+#pragma endregion
 
 bool AMSCharacter::IsWeaponEquipped()
 {

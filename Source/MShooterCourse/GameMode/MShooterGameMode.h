@@ -16,4 +16,6 @@ class MSHOOTERCOURSE_API AMShooterGameMode : public AGameMode
 	
 public:
 	virtual void PlayerEliminated(class AMSCharacter* ElimmedCharacter, class AMSPlayerController* VictimController, AMSPlayerController* AttackerController);
+
+	virtual void RequestRespawn(ACharacter* ElimmedCharacter, AController* ElimmedController);
 };

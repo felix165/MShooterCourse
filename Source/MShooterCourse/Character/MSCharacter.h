@@ -24,8 +24,10 @@ public:
 
 	virtual void OnRep_ReplicatedMovement() override;
 
-	UFUNCTION(NetMulticast, Reliable)
 	void Elim();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastElim();
 
 protected:
 	virtual void BeginPlay() override;
@@ -122,7 +124,17 @@ private:
 
 	class AMSPlayerController* PC;
 
+	/**
+	* Elim
+	*/
 	bool bElimmed = false;
+
+	FTimerHandle ElimTimer;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
+
+	void ElimTimerFinished();
 
 public:	
 
