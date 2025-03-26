@@ -13,6 +13,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Animation/AnimInstance.h"
 #include "MShooterCourse/PlayerController/MSPlayerController.h"
+#include "MShooterCourse/GameMode/MShooterGameMode.h"
 
 AMSCharacter::AMSCharacter()
 {
@@ -158,8 +159,23 @@ void AMSCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDama
 	UpdateHUDHealth();
 	PlayHitReactMontage();
 
+	if (Health <= 0)
+	{
+		AMShooterGameMode* GM = GetWorld()->GetAuthGameMode<AMShooterGameMode>();
+		if (GM)
+		{
+			PC = PC == nullptr ? Cast<AMSPlayerController>(Controller) : PC;
+			AMSPlayerController* AttackerPC = Cast<AMSPlayerController>(InstigatorController);
+			GM->PlayerEliminated(this, PC, AttackerPC);
+		}
+	}
 }
 
+void AMSCharacter::Elim()
+{
+
+
+}
 
 
 void AMSCharacter::MoveForward(float Value)
@@ -469,6 +485,8 @@ void AMSCharacter::OnRep_ReplicatedMovement()
 	SimProxiesTurn();
 	TimeSinceLastMovementReplication = 0.f;
 }
+
+
 
 void AMSCharacter::OnRep_Health()
 {
