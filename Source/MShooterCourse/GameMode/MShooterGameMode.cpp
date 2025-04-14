@@ -6,9 +6,27 @@
 #include "MShooterCourse/PlayerController/MSPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
+#include "MShooterCourse/PlayerState/MSPlayerState.h"
 
 void AMShooterGameMode::PlayerEliminated(AMSCharacter* ElimmedCharacter, AMSPlayerController* VictimController, AMSPlayerController* AttackerController)
 {
+    if (AttackerController == nullptr || AttackerController->PlayerState == nullptr) return;
+    if (VictimController == nullptr || VictimController->PlayerState == nullptr) return;
+
+    AMSPlayerState* AttackerPS = AttackerController ? Cast<AMSPlayerState>(AttackerController->PlayerState) : nullptr;
+    AMSPlayerState* VictimPS = VictimController ? Cast<AMSPlayerState>(VictimController->PlayerState) : nullptr;
+
+    if (AttackerPS && AttackerPS != VictimPS)
+    {
+        AttackerPS->AddToScore(1.f);
+    }
+
+    if (VictimPS)
+    {
+        VictimPS->AddToDefeats(1);
+    }
+
+
     if (ElimmedCharacter)
     {
         ElimmedCharacter->Elim();

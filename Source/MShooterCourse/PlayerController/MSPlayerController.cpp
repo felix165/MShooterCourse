@@ -44,3 +44,33 @@ void AMSPlayerController::SetHUDHealth(float Health, float MaxHealth)
     }
 
 }
+
+void AMSPlayerController::SetHUDScore(float Score)
+{
+    MSHUD = MSHUD == nullptr ? Cast<AMSHUD>(GetHUD()) : MSHUD;
+
+    bool bHUDValid = MSHUD &&
+        MSHUD->CharacterOverlay &&
+        MSHUD->CharacterOverlay->HealthBar &&
+        MSHUD->CharacterOverlay->HealthText;
+    if (bHUDValid)
+    {
+        FString ScoreText = FString::Printf(TEXT("%d"), FMath::FloorToInt(Score));
+        MSHUD->CharacterOverlay->ScoreAmount->SetText(FText::FromString(ScoreText));
+    }
+}
+
+void AMSPlayerController::SetHUDDefeats(int32 Defeats)
+{
+    MSHUD = MSHUD == nullptr ? Cast<AMSHUD>(GetHUD()) : MSHUD;
+
+    bool bHUDValid = MSHUD &&
+        MSHUD->CharacterOverlay &&
+        MSHUD->CharacterOverlay->HealthBar &&
+        MSHUD->CharacterOverlay->HealthText;
+    if (bHUDValid)
+    {
+        FString DefeatsText = FString::Printf(TEXT("%d"), Defeats);
+        MSHUD->CharacterOverlay->DefeatsAmount->SetText(FText::FromString(DefeatsText));
+    }
+}

@@ -13,11 +13,13 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Animation/AnimInstance.h"
 #include "MShooterCourse/PlayerController/MSPlayerController.h"
+#include "MShooterCourse/PlayerState/MSPlayerState.h"
 #include "MShooterCourse/GameMode/MShooterGameMode.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "Particles/ParticleSystemComponent.h"
+
 
 AMSCharacter::AMSCharacter()
 {
@@ -94,6 +96,7 @@ void AMSCharacter::Tick(float DeltaTime)
 	}
 
 	HideCameraIfCharacterClose();
+	PollInit();
 	
 }
 
@@ -189,9 +192,8 @@ void AMSCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDama
 		AMShooterGameMode* GM = GetWorld()->GetAuthGameMode<AMShooterGameMode>();
 		if (GM)
 		{
-			PC = PC == nullptr ? Cast<AMSPlayerController>(Controller) : PC;
 			AMSPlayerController* AttackerPC = Cast<AMSPlayerController>(InstigatorController);
-			GM->PlayerEliminated(this, PC, AttackerPC);
+			GM->PlayerEliminated(this, GetPlayerController(), AttackerPC);
 		}
 	}
 }
@@ -588,10 +590,22 @@ void AMSCharacter::OnRep_Health()
 
 void AMSCharacter::UpdateHUDHealth()
 {
-	PC = PC == nullptr ? Cast<AMSPlayerController>(Controller) : PC;
-	if (PC)
+	if (GetPlayerController())
 	{
-		PC->SetHUDHealth(Health, MaxHealth);
+		GetPlayerController()->SetHUDHealth(Health, MaxHealth);
+	}
+}
+
+void AMSCharacter::PollInit()
+{
+	if (PS == nullptr)
+	{
+		PS = GetPlayerState<AMSPlayerState>();
+		if (PS)
+		{
+			PS->AddToScore(0.f);
+			PS->AddToDefeats(0);
+		}
 	}
 }
 
@@ -648,6 +662,12 @@ FVector AMSCharacter::GetHitTarget() const
 {
 	if (CombatComponent == nullptr) return FVector();
 	return CombatComponent->HitResult.ImpactPoint;
+}
+
+AMSPlayerController* AMSCharacter::GetPlayerController()
+{
+	PC = PC == nullptr ? Cast<AMSPlayerController>(Controller) : PC;
+	return PC;
 }
 
 

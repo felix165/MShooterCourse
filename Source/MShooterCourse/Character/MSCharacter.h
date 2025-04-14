@@ -57,6 +57,9 @@ protected:
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 	void UpdateHUDHealth();
 
+	// Poll for any relelvant classes and initialize our HUD
+	void PollInit();
+
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
@@ -125,6 +128,7 @@ private:
 	UFUNCTION()
 	void OnRep_Health();
 
+	UPROPERTY()
 	class AMSPlayerController* PC;
 
 	/**
@@ -175,6 +179,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	class USoundCue* ElimBotSound;
 
+	UPROPERTY()
+	class AMSPlayerState* PS;
+
 public:	
 
 	//only SET the value if it changing to replicated
@@ -201,4 +208,6 @@ public:
 	FORCEINLINE float GetHealth() const { return Health; }
 
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+
+	AMSPlayerController* GetPlayerController();
 };
