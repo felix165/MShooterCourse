@@ -6,6 +6,7 @@
 #include "MShooterCourse/HUD/CharOverlay.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "MShooterCourse/Character/MSCharacter.h"
 
 
 
@@ -14,6 +15,17 @@ void AMSPlayerController::BeginPlay()
     Super::BeginPlay();
     MSHUD = Cast<AMSHUD>(GetHUD());
 }
+
+void AMSPlayerController::OnPossess(APawn* InPawn)
+{
+    Super::OnPossess(InPawn);
+    AMSCharacter* MSCharacter = Cast<AMSCharacter>(InPawn);
+    if (MSCharacter)
+    {
+        SetHUDHealth(MSCharacter->GetHealth(), MSCharacter->GetMaxHealth());
+    }
+}
+
 
 void AMSPlayerController::SetHUDHealth(float Health, float MaxHealth)
 {
