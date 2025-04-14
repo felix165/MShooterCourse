@@ -187,6 +187,10 @@ void AMSCharacter::Elim()
 {
 	if (!bElimmed)
 	{
+		if (CombatComponent && CombatComponent->EquippedWeapon)
+		{
+			CombatComponent->EquippedWeapon->Dropped();
+		}
 		MulticastElim();
 		GetWorldTimerManager().SetTimer(
 			ElimTimer,
@@ -203,6 +207,7 @@ void AMSCharacter::MulticastElim_Implementation()
 	bElimmed = true;
 	PlayElimMontage();
 
+	//start dissolve effect
 	if (DissolveMaterialInstance)
 	{
 		DynamicDissolveMaterialInstance = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
@@ -212,6 +217,17 @@ void AMSCharacter::MulticastElim_Implementation()
 	}
 	StartDissolve();
 
+	//Disable movement
+	GetCharacterMovement()->DisableMovement();
+	GetCharacterMovement()->StopMovementImmediately();
+	if (PC)
+	{
+		DisableInput(PC);
+	}
+
+	// Disable collision
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 
@@ -259,6 +275,13 @@ void AMSCharacter::EquipButtonPressed()
 		{
 			ServerEquipButtonPressed();
 		}
+	}
+}
+void AMSCharacter::ServerEquipButtonPressed_Implementation()
+{
+	if (CombatComponent)
+	{
+		CombatComponent->EquipWeapon(OverlappingWeapon);
 	}
 }
 
@@ -476,13 +499,7 @@ void AMSCharacter::HideCameraIfCharacterClose()
 	}
 }
 
-void AMSCharacter::ServerEquipButtonPressed_Implementation()
-{
-	if (CombatComponent)
-	{
-		CombatComponent->EquipWeapon(OverlappingWeapon);
-	}
-}
+
 
 
 
